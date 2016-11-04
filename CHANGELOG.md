@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 --- 
 
+##[2.6.4](https://github.com/AFNetworking/AFNetworking/releases/tag/2.6.4) (04/11/2016)
+Backported IPv6 comatibility from 3.x branch
+
+#### Added
+* Added support for IPv6 to Reachability. Backported from [#3174](https://github.com/AFNetworking/AFNetworking/pull/3174)
+
+
 ##[2.6.3](https://github.com/AFNetworking/AFNetworking/releases/tag/2.6.3) (11/11/2015)
 Released on Wednesday, November 11, 2015. All issues associated with this milestone can be found using this [filter](https://github.com/AFNetworking/AFNetworking/issues?q=milestone%3A2.6.3+is%3Aclosed).
 
