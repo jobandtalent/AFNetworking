@@ -116,19 +116,28 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
     static AFNetworkReachabilityManager *_sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 80000) || (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101100)
-        struct sockaddr_in6 address;
-        bzero(&address, sizeof(address));
-        address.sin6_len = sizeof(address);
-        address.sin6_family = AF_INET6;
-#else
-        struct sockaddr_in address;
-        bzero(&address, sizeof(address));
-        address.sin_len = sizeof(address);
-        address.sin_family = AF_INET;
-#endif
+        AFNetworkReachabilityManager *manager = nil;
+        NSOperatingSystemVersion iOS9orLater;
 
-        _sharedManager = [self managerForAddress:&address];
+        iOS9orLater.majorVersion = 9;
+        iOS9orLater.minorVersion = 0;
+        iOS9orLater.patchVersion = 0;
+
+        if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS9orLater]) {
+            struct sockaddr_in6 address;
+            bzero(&address, sizeof(address));
+            address.sin6_len = sizeof(address);
+            address.sin6_family = AF_INET6;
+            manager = [self managerForAddress:&address];
+        } else {
+            struct sockaddr_in address;
+            bzero(&address, sizeof(address));
+            address.sin_len = sizeof(address);
+            address.sin_family = AF_INET;
+            manager = [self managerForAddress:&address];
+        }
+
+        _sharedManager = manager;
     });
 
     return _sharedManager;
